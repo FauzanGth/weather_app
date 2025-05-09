@@ -52,37 +52,71 @@ class _ResultState extends State<Result> {
             child: const Icon(Icons.arrow_back, color: Colors.white),
           ),
         ),
-        body: Container(
-          padding: const EdgeInsets.only(left: 70, right: 70),
-          child: FutureBuilder(
-            future: getDataFromAPI(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              '../assets/images/background.jpg',
+              fit: BoxFit.cover,
+            ),
+            Container(
+              color: Colors.black.withOpacity(0.3), // opsional: gelapkan background
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 70),
+              child: FutureBuilder(
+                future: getDataFromAPI(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                   return const Center(child: CircularProgressIndicator());
+                  }
 
-              if (snapshot.hasData) {
-                final data = snapshot.data!;
-                return Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // NAMA KOTA
-                      Text("${data["name"]}"),
-                      //SUHU
-                      Text("${data["main"]["temp"]}°C"),
-                      //Menampilkan Cuaca
-                      Text("${data["weather"][0]["main"]}"),
-                      //feels like
-                      Text("suhu: ${data["main"]["feels_like"]}°C")
-                    ],
-                  ),
-                );
-              } else {
-                return const Text("Tempat tidak diketahui");
-              }
-            },
-          ),
+                  if (snapshot.hasData) {
+                    final data = snapshot.data!;
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${data["name"]}",
+                            style: const TextStyle(
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            "${data["main"]["temp"]}°C",
+                            style: const TextStyle(
+                              fontSize: 80,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "${data["weather"][0]["main"]}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "terasa seperti ${data["main"]["feels_like"]}°C",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const Center(child: Text("Tempat tidak diketahui", style: TextStyle(color: Colors.white)));
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
