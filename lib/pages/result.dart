@@ -88,7 +88,7 @@ class _ResultState extends State<Result> {
                           Text(
                             "${data["main"]["temp"]}°C",
                             style: const TextStyle(
-                              fontSize: 80,
+                              fontSize: 60,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
